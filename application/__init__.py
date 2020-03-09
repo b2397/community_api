@@ -18,13 +18,15 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 db = SQLAlchemy()
 
 
-# def create_app(main=True):
-def create_app():
+def create_app(test_config=None):
     # Initialize the core application
     app = Flask(__name__)
 
     # Import the configuration settings from the config file
     app.config.from_pyfile('config.py')
+    # Override/update any settings passed into the function
+    if test_config is not None:
+        app.config.update(test_config)
 
     # Import the database and marshmallow objects, and attach them to the core application
     from application.models import db, ma

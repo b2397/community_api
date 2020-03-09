@@ -18,16 +18,11 @@ bmuas_blueprint = Blueprint('bmuas_blueprint', __name__, url_prefix='/bmuas')
 # GET
 ################################################################################################
 
-
 # Get All Users
-# @users_blueprint.route('/', methods=['GET'])
 @users_blueprint.route('/', methods=['GET'])
 def get_users():
-    # offset=1&limit=3
     all_users = User.query.all()
     users_schema = UserSchema(many=True)
-    # result = users_schema.dump(all_users)
-    # return jsonify(result)
     return users_schema.jsonify(all_users)
 
 
@@ -52,7 +47,6 @@ def get_answers():
 def get_user(user_id):
     user = User.query.filter_by(user_id=user_id).first_or_404(description=f"Failure. user_id:{user_id} not found.")
     user_schema = UserSchema()
-    # dump_data = user_schema.dump(user)
     return user_schema.jsonify(user)
 
 
@@ -61,7 +55,6 @@ def get_user(user_id):
 def get_question(question_id):
     question = Question.query.filter_by(question_id=question_id).first_or_404(
         description=f"Failure. question_id:{question_id} not found.")
-    # question = Question.query.get(question_id)
     question_schema = QuestionSchema()
     return question_schema.jsonify(question)
 
@@ -71,7 +64,6 @@ def get_question(question_id):
 def get_answer(answer_id):
     answer = Answer.query.filter_by(answer_id=answer_id).first_or_404(
         description=f"Failure. answer_id:{answer_id} not found.")
-    # answer = Answer.query.get(answer_id)
     answer_schema = AnswerSchema()
     return answer_schema.jsonify(answer)
 
@@ -80,11 +72,7 @@ def get_answer(answer_id):
 @users_blueprint.route('/<user_id>/questions', methods=['GET'])
 def get_user_questions(user_id):
     user = User.query.get_or_404(ident=user_id, description=f"Failure. user_id:{user_id} not found.")
-    # user = User.query.filter_by(user_id=user_id).get_or_404(description=f"Failure. user_id:{user_id} not found.")
-    # for question in user.questions:
-    #     print(question.question_title)
     schema = QuestionSchema(many=True)
-    # dump_data = user_schema.dump(user)
     return schema.jsonify(user.questions)
 
 
@@ -210,7 +198,6 @@ def add_bmua():
 # UPDATE / PUT
 ################################################################################################
 
-
 # Update a User
 @users_blueprint.route('/<user_id>', methods=['PUT'])
 def update_user(user_id):
@@ -269,7 +256,6 @@ def update_answer(answer_id):
 ################################################################################################
 # DELETE
 ################################################################################################
-
 
 # Delete a User
 @users_blueprint.route('/<user_id>', methods=['DELETE'])

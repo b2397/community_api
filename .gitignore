@@ -1,7 +1,11 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *$py.class
+
+# Mac stuff
+.DS_Store
 
 # Flask stuff:
 instance/
@@ -29,4 +33,5 @@ venv.bak/
 
 # ignore the database
 app1.db
+test1.db
 .vscode

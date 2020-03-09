@@ -4,7 +4,7 @@ from sqlalchemy.orm import backref
 from marshmallow import fields
 from flask_marshmallow import Marshmallow
 from datetime import datetime
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
+from marshmallow_sqlalchemy.schema import *  #SQLAlchemyAutoSchema, auto_field
 
 # Init db
 db = SQLAlchemy()
@@ -31,6 +31,14 @@ class User(db.Model):
 #     self.user_name = user_name
 
 
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        include_relationships = True
+        load_instance = True
+
+
+'''
 # User Schema
 class UserSchema(ma.ModelSchema):
     def __init__(self, **kwargs):
@@ -39,6 +47,7 @@ class UserSchema(ma.ModelSchema):
     class Meta:
         model = User
         # sqla_session = db.session
+'''
 
 
 # Question Class/Model
@@ -64,6 +73,15 @@ class Question(db.Model):
     #     return "<Question(title={self.q_title!r})>".format(self=self)
 
 
+class QuestionSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Question
+        include_fk = True
+        include_relationships = True
+        load_instance = True
+
+
+'''
 # Question Schema
 class QuestionSchema(ma.ModelSchema):
     def __init__(self, **kwargs):
@@ -72,6 +90,7 @@ class QuestionSchema(ma.ModelSchema):
     class Meta:
         model = Question
         include_fk = True
+'''
 
 
 # Answer Class/Model
@@ -88,6 +107,16 @@ class Answer(db.Model):
 
 
 # Answer Schema
+class AnswerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Answer
+        include_fk = True
+        include_relationships = True
+        load_instance = True
+
+
+'''
+# Answer Schema
 class AnswerSchema(ma.ModelSchema):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -95,6 +124,7 @@ class AnswerSchema(ma.ModelSchema):
     class Meta:
         model = Answer
         include_fk = True
+'''
 
 
 # BM_User_x_Question Class/Model
@@ -110,13 +140,12 @@ class BM_User_x_Question(db.Model):
 
 
 # BM_User_x_Question Schema
-class BM_User_x_QuestionSchema(ma.ModelSchema):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
+class BM_User_x_QuestionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = BM_User_x_Question
         # include_fk = True
+        # include_relationships = True
+        load_instance = True
 
     # user_id = fields.Int()
     # question_id = fields.Int()
@@ -137,9 +166,7 @@ class BM_User_x_Answer(db.Model):
 
 
 # BM_User_x_Answer Schema
-class BM_User_x_AnswerSchema(ma.ModelSchema):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-
+class BM_User_x_AnswerSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = BM_User_x_Answer
+        load_instance = True
