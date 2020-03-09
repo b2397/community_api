@@ -39,4 +39,23 @@ def create_app():
     app.register_blueprint(routes.bmuqs_blueprint)
     app.register_blueprint(routes.bmuas_blueprint)
 
+    # Register the error handler functions defined below
+    app.register_error_handler(400, handle_errors)
+    app.register_error_handler(404, handle_errors)
+    app.register_error_handler(409, handle_errors)
+    app.register_error_handler(500, handle_errors)
+    app.register_error_handler(Exception, handle_generic_exception)
+
     return app
+
+
+# Exception handling
+def handle_errors(error):
+    return make_response(jsonify({'code': error.code, 'message': error.description}), error.code)
+
+
+def handle_generic_exception(error):
+    print(error)
+    print(error.args)
+    message = "The server encountered an internal error and was unable to complete your request."
+    return make_response(jsonify({'code': 500, 'message': message}), 500)

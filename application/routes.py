@@ -331,36 +331,3 @@ def delete_bmua(user_id, answer_id):
     db.session.commit()
 
     return make_response(jsonify({'message': 'Bookmarked answer deleted.'}), 200)
-
-
-################################################################################################
-# Exception handling
-################################################################################################
-@users_blueprint.errorhandler(400)
-@questions_blueprint.errorhandler(400)
-@answers_blueprint.errorhandler(400)
-@bmuqs_blueprint.errorhandler(400)
-@bmuas_blueprint.errorhandler(400)
-@users_blueprint.errorhandler(404)
-@questions_blueprint.errorhandler(404)
-@answers_blueprint.errorhandler(404)
-@users_blueprint.errorhandler(409)
-@questions_blueprint.errorhandler(409)
-@answers_blueprint.errorhandler(409)
-@users_blueprint.errorhandler(500)
-@questions_blueprint.errorhandler(500)
-@answers_blueprint.errorhandler(500)
-def handle_errors(error):
-    return make_response(jsonify({'code': error.code, 'message': error.description}), error.code)
-
-
-@users_blueprint.errorhandler(Exception)
-@questions_blueprint.errorhandler(Exception)
-@answers_blueprint.errorhandler(Exception)
-@bmuqs_blueprint.errorhandler(Exception)
-@bmuas_blueprint.errorhandler(Exception)
-def handle_generic_exception(error):
-    print(error)
-    print(error.args)
-    message = "The server encountered an internal error and was unable to complete your request."
-    return make_response(jsonify({'code': 500, 'message': message}), 500)
